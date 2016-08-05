@@ -3,6 +3,7 @@ package com.tyaer.basic.net.helper;
 import com.tyaer.basic.net.httptools.HttpClientManager;
 import com.tyaer.basic.net.httptools.HttpClientManagerParams;
 import com.tyaer.basic.utils.HtmlUtils;
+import com.tyaer.bean.HttpResutBean;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpEntity;
@@ -159,7 +160,6 @@ public class HttpHelper {
             logger.error("logger，searchUrl: " + url);
             logger.error(ExceptionUtils.getMessage(e));
         } finally {
-
             // 关闭操作类和数据流释放内存
             colseAllStream(is, entity, httpGet);
         }
@@ -187,11 +187,11 @@ public class HttpHelper {
             hotpot.setHeader("Accept-Language", "zh-CN,zh;q=0.8");
             hotpot.setHeader("Cache-Control", "no-cache");
             hotpot.setHeader("Connection", "Keep-Alive");
-            hotpot.setHeader("Origin", "http://epaper.xkb.com.cn");
-            hotpot.setHeader("Referer", "http://epaper.xkb.com.cn/index.php");
-            hotpot.setHeader("Host", "epaper.xkb.com.cn");
-            hotpot.setHeader("X-Requested-With", "XMLHttpRequest");
-            hotpot.setHeader("Cookie", "PHPSESSID=onl70228ksas8l5ja7qj6nkm70; Hm_lvt_1924177ad2e7e7298da96b4846fdf1d4=1466672992; Hm_lpvt_1924177ad2e7e7298da96b4846fdf1d4=1466673924");
+//            hotpot.setHeader("Origin", "http://epaper.xkb.com.cn");
+//            hotpot.setHeader("Referer", "http://epaper.xkb.com.cn/index.php");
+//            hotpot.setHeader("Host", "epaper.xkb.com.cn");
+//            hotpot.setHeader("X-Requested-With", "XMLHttpRequest");
+            hotpot.setHeader("Cookie", "JSESSIONID=F077794F9ACD9F0C5DDA983783BB1FC6");
             hotpot.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
             httpResponse = httpClient.execute(hotpot);
             entity = httpResponse.getEntity();
@@ -211,12 +211,12 @@ public class HttpHelper {
             logger.error("logger，searchUrl: " + url);
             logger.error(ExceptionUtils.getMessage(e));
         } finally {
-
             // 关闭操作类和数据流释放内存
             colseAllStream(is, entity, hotpot);
         }
         return html;
     }
+
 
     public String sendRequest(String url, String cookie) {
         String html = "";
@@ -299,6 +299,52 @@ public class HttpHelper {
             colseAllStream(is, entity, httpGet);
         }
         return html;
+    }
+
+    /**
+     * 使用代理的get请求
+     */
+    public HttpResutBean sendRequest(String url, HttpHost httpHost) {
+        HttpResutBean httpResut = null;
+        // 搜索链接
+        HttpClient httpClient = HttpClientManager.getHttpClient();
+        HttpResponse httpResponse = null;
+        HttpEntity entity = null;
+        InputStream is = null;
+        BufferedInputStream bis = null;
+        HttpGet httpGet = null;
+        String charset = "UTF-8";
+        String message = null;
+        try {
+            httpGet = new HttpGet(url);
+            // 模拟浏览器
+            setHeader(httpGet);
+            // 设置代理
+//            RequestConfig config = RequestConfig.custom().setProxy(httpHost) .build();
+//            httpGet.setConfig(config);
+            //设置代理
+            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, httpHost);
+            httpResponse = httpClient.execute(httpGet);
+            // 获取返回内容
+            entity = httpResponse.getEntity();
+            is = entity.getContent();
+            bis = new BufferedInputStream(is);
+            byte[] bytes = input2byte(bis);
+            String body = new String(bytes, "ISO8859-1");
+            charset = getCharSetByBody(body, charset);
+            message = new String(bytes, charset);
+            // System.out.println(result);
+        } catch (IOException e) {
+            logger.error("logger，searchUrl:" + url);
+            message = ExceptionUtils.getMessage(e);
+            logger.error(message);
+        } finally {
+            // 关闭操作类和数据流释放内存
+            colseAllStream(is, entity, httpGet);
+        }
+        httpResut = new HttpResutBean(getStatusCode(httpResponse), charset,
+                message);
+        return httpResut;
     }
 
     private String bufTransformHtml(String html, String charset, ByteBuffer byteBuffer) {
@@ -539,8 +585,12 @@ public class HttpHelper {
 
     // 得到网站的返回编号
     public static int getStatusCode(HttpResponse httpResponse) {
-        int StatusCode = httpResponse.getStatusLine().getStatusCode();
-        return StatusCode;
+        if (httpResponse != null) {
+            int StatusCode = httpResponse.getStatusLine().getStatusCode();
+            return StatusCode;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -573,15 +623,16 @@ public class HttpHelper {
     public static void main(String[] args) throws ClientProtocolException,
             IOException {
         HttpHelper httpHelper = new HttpHelper();
-        String url1 = "http://weixin.sogou.com/websearch/art.jsp?sg=CBf80b2xkga1-x-JOUbvmfJGWBRr3oe4r1AWURLuzjaY6zyCOWAw2vimkZrrG_tHjOKhvbU29Y52oFq6F8jRjZXieEuop7MLgRnvvNGhvUcJlYhvutf3ini9esapE8KSNMHWHow-EulC1ZpLwDhV3D0a7rmrVa5c&url=p0OVDH8R4SHyUySb8E88hkJm8GF_McJfBfynRTbN8wiw6XbQ_dH3k28rGEZHMAK1M-zqhvKlj3fZ6CCyUuxg1mQ3JxMQ3374XkTDDVnuGzRZgYB4tjQYmmRD01RPo_y7ojblXIV1SkZYy-5x5In7jJFmExjqCxhpkyjFvwP6PuGcQ64lGQ2ZDMuqxplQrsbk";
-        String url = "http://weixin.sogou.com/websearch/art.jsp?sg=CBf80b2xkgZfvufhmRzuMLkO81fqI_dQc6yOUe72-J_BlSRSRZWMnQm6TPEHznBEHCZbiXAAbSQ7Sk3TiznY_pxOlleD-hsA0C_ZHJHPImM9Gu65q1WuXA..&url=p0OVDH8R4SHyUySb8E88hkJm8GF_McJfBfynRTbN8whSbnodspRrBbmEeKJbEMVnXY6RLCSg2kSHyrrukhPPrmQ3JxMQ33748SsxTNb5mg5U9LVfWcAZq9TpmCl5RT9LEp1sHMFWE9RYy-5x5In7jJFmExjqCxhpkyjFvwP6PuGcQ64lGQ2ZDMuqxplQrsbk";
-        String url2 = "http://xueqiu.com/statuses/search.json?count=30&comment=0&symbol=SH600012&hl=0&source=trans&page=1&_=1430818569024";
-        String cookie = "ABTEST=8|1442285401|v1;domain=weixin.sogou.com;path=/;expires=Thu Oct 15 10:50:01 CST 2015;SNUID=2EAEBE3F4E48518D734A6ADE4EDE3AA9;domain=sogou.com;path=/;expires=Fri Sep 25 10:50:01 CST 2015;IPLOC=CN4301;domain=sogou.com;path=/;expires=Wed Sep 14 10:50:01 CST 2016;SUID=63E3F0716B20900A0000000055F78759;domain=weixin.sogou.com;path=/;expires=Mon Sep 10 10:50:01 CST 2035";
-        // String html = sendRequestCookie(url, "get", null,cookie);
-        // System.out.println(html);
-        String url3 = "http://weixin.sogoasdu.com/gzhjs?cb=sogou.weixin.gzasdhcb&openid=oIWsFt7AecfMHG2t1Eb6JIYYmP6g&eqs=kHsqoh5guuOWo5hMghaDnum0dZlLUAHfi9JCUGVEegvUx3JINBOcD7Puoyxvy9fSH6Yiq&ekv=7&page=1&t=1439949732268";
-        String url4 = "https://sports.yahoo.com/top/expertsarchive/rss.xml?author=Eric+Adelson";
+//        String url1 = "http://weixin.sogou.com/websearch/art.jsp?sg=CBf80b2xkga1-x-JOUbvmfJGWBRr3oe4r1AWURLuzjaY6zyCOWAw2vimkZrrG_tHjOKhvbU29Y52oFq6F8jRjZXieEuop7MLgRnvvNGhvUcJlYhvutf3ini9esapE8KSNMHWHow-EulC1ZpLwDhV3D0a7rmrVa5c&url=p0OVDH8R4SHyUySb8E88hkJm8GF_McJfBfynRTbN8wiw6XbQ_dH3k28rGEZHMAK1M-zqhvKlj3fZ6CCyUuxg1mQ3JxMQ3374XkTDDVnuGzRZgYB4tjQYmmRD01RPo_y7ojblXIV1SkZYy-5x5In7jJFmExjqCxhpkyjFvwP6PuGcQ64lGQ2ZDMuqxplQrsbk";
+//        String url = "http://weixin.sogou.com/websearch/art.jsp?sg=CBf80b2xkgZfvufhmRzuMLkO81fqI_dQc6yOUe72-J_BlSRSRZWMnQm6TPEHznBEHCZbiXAAbSQ7Sk3TiznY_pxOlleD-hsA0C_ZHJHPImM9Gu65q1WuXA..&url=p0OVDH8R4SHyUySb8E88hkJm8GF_McJfBfynRTbN8whSbnodspRrBbmEeKJbEMVnXY6RLCSg2kSHyrrukhPPrmQ3JxMQ33748SsxTNb5mg5U9LVfWcAZq9TpmCl5RT9LEp1sHMFWE9RYy-5x5In7jJFmExjqCxhpkyjFvwP6PuGcQ64lGQ2ZDMuqxplQrsbk";
+//        String url2 = "http://xueqiu.com/statuses/search.json?count=30&comment=0&symbol=SH600012&hl=0&source=trans&page=1&_=1430818569024";
+//        String cookie = "ABTEST=8|1442285401|v1;domain=weixin.sogou.com;path=/;expires=Thu Oct 15 10:50:01 CST 2015;SNUID=2EAEBE3F4E48518D734A6ADE4EDE3AA9;domain=sogou.com;path=/;expires=Fri Sep 25 10:50:01 CST 2015;IPLOC=CN4301;domain=sogou.com;path=/;expires=Wed Sep 14 10:50:01 CST 2016;SUID=63E3F0716B20900A0000000055F78759;domain=weixin.sogou.com;path=/;expires=Mon Sep 10 10:50:01 CST 2035";
+//        // String html = sendRequestCookie(url, "get", null,cookie);
+//        // System.out.println(html);
+//        String url3 = "http://weixin.sogoasdu.com/gzhjs?cb=sogou.weixin.gzasdhcb&openid=oIWsFt7AecfMHG2t1Eb6JIYYmP6g&eqs=kHsqoh5guuOWo5hMghaDnum0dZlLUAHfi9JCUGVEegvUx3JINBOcD7Puoyxvy9fSH6Yiq&ekv=7&page=1&t=1439949732268";
+        String url4 = "http://china.ynet.com/3.1/1607/29/11532565.html";
         System.out.println(httpHelper.sendRequest(url4));
+////        HttpHost proxy = new HttpHost("219.141.225.108", 80);
     }
 
 }

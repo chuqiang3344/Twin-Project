@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import scala.Int;
 
 /**
  * 操作Excel表格的功能类
@@ -50,7 +51,7 @@ public class ExcelReader {
         String[] title = new String[colNum];
         for (int i = 0; i < colNum; i++) {
             //title[i] = getStringCellValue(row.getCell((short) i));
-            title[i] = getCellFormatValue(row.getCell((short) i));
+            title[i] = getCellFormatValue(row.getCell(i));
         }
         return title;
     }
@@ -84,7 +85,7 @@ public class ExcelReader {
                 // 也可以将每个单元格的数据设置到一个javabean的属性中，此时需要新建一个javabean
                 // str += getStringCellValue(row.getCell((short) j)).trim() +
                 // "-";
-                str += getCellFormatValue(row.getCell((short) j)).trim() + "    ";
+                str += getCellFormatValue(row.getCell(j)).trim() + "    ";
                 j++;
             }
             content.put(i, str);
@@ -99,17 +100,17 @@ public class ExcelReader {
      * @param
      * @return Map 包含单元格数据内容的Map对象
      */
-    public String[][] readExceltoTable(String fileUrl) {
+    public String[][] readExceltoTable(String fileUrl,int sheetId) {
         String[][] table = null;
         POIFSFileSystem fs = null;
         try {
             fs = new POIFSFileSystem(new FileInputStream(fileUrl));
             //得到Excel工作簿对象
             HSSFWorkbook wb = new HSSFWorkbook(fs);
-            //得到Excel工作表对象
-            HSSFSheet sheet = wb.getSheetAt(0);
+            //得到Excel工作表对象 0 第几个表
+            HSSFSheet sheet = wb.getSheetAt(sheetId-1);
             //得到Excel工作表的行
-            int rowNum = sheet.getLastRowNum();
+            int rowNum = sheet.getLastRowNum()+1;
             int colNum = sheet.getRow(0).getPhysicalNumberOfCells();
             table=new String[rowNum][colNum];
             for (int i = 0; i < rowNum; i++) {

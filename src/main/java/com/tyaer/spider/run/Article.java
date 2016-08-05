@@ -41,7 +41,7 @@ public class Article {
 	 */
 	public static boolean articleXpathTest(String url, String modelPath) {
 		String html = null;
-		html = httpHelper.sendRequest(url, null);
+		html = httpHelper.sendRequest(url, "");
 //		 System.out.println(html);
 		if (html.equals("false")) {
 			System.out.println("访问异常：" + url);
