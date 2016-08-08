@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="828b27a4-4a72-4b3c-ae31-08fb4ad543f1" name="Default" comment="izhonghong first">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/file/MAC心跳监控异常审查.xls" />
+    <list default="true" id="828b27a4-4a72-4b3c-ae31-08fb4ad543f1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/basic/datebase/helper/MysqlHelper.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/basic/datebase/helper/MysqlHelper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/basic/datebase/helper/SSHHelper.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/basic/datebase/helper/SSHHelper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/basic/net/helper/HttpHelper.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/basic/net/helper/HttpHelper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/basic/net/httptools/HttpClientManager.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/basic/net/httptools/HttpClientManager.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/spider/run/Article.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/spider/run/Article.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tyaer/spider/run/Seed.class" afterPath="$PROJECT_DIR$/target/classes/com/tyaer/spider/run/Seed.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/logs/number.log" afterPath="$PROJECT_DIR$/logs/number.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tyaer/basic/net/helper/HttpHelper.java" afterPath="$PROJECT_DIR$/src/main/java/com/tyaer/basic/net/helper/HttpHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tyaer/basic/utils/ExcelReader.java" afterPath="$PROJECT_DIR$/src/main/java/com/tyaer/basic/utils/ExcelReader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/izhonghong/App/test.java" afterPath="$PROJECT_DIR$/src/test/java/izhonghong/App/test.java" />
     </list>
     <ignored path="Twin`s Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -830,7 +824,7 @@
       <workItem from="1467775053290" duration="128000" />
       <workItem from="1470375907355" duration="193000" />
       <workItem from="1470376393579" duration="11434000" />
-      <workItem from="1470616458009" duration="1376000" />
+      <workItem from="1470616458009" duration="1389000" />
     </task>
     <task id="LOCAL-00001" summary="izhonghong first">
       <created>1470376985214</created>
@@ -838,11 +832,17 @@
       <option name="project" value="LOCAL" />
       <updated>1470376985214</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="izhonghong first">
+      <created>1470617844346</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1470617844346</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95680000" />
+    <option name="totallyTimeSpent" value="95693000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
