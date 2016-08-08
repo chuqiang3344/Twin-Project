@@ -191,7 +191,7 @@ public class HttpHelper {
 //            hotpot.setHeader("Referer", "http://epaper.xkb.com.cn/index.php");
 //            hotpot.setHeader("Host", "epaper.xkb.com.cn");
 //            hotpot.setHeader("X-Requested-With", "XMLHttpRequest");
-            hotpot.setHeader("Cookie", "JSESSIONID=F077794F9ACD9F0C5DDA983783BB1FC6");
+            hotpot.setHeader("Cookie", "JSESSIONID=2E7CA6D24BF0CD7213DB27E5A63C5D65");
             hotpot.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
             httpResponse = httpClient.execute(hotpot);
             entity = httpResponse.getEntity();

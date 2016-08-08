@@ -11,25 +11,70 @@ import java.util.List;
 public class test {
     public static void main(String[] args) {
         ExcelReader excelReader = new ExcelReader();
-        List<String> list=new ArrayList<String>();
-        String[][] table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",3);
-        for (int i = 1; i < table.length; i++) {
-            String name3 = table[i][2];
-            list.add(name3);
-        }
-        table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",2);
         List<String> list2=new ArrayList<String>();
+        String[][] table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",2);
+        System.out.println(table.length);
         for (int i = 1; i < table.length; i++) {
             String name = table[i][1];
             list2.add(name);
+//            System.out.println(name);
         }
-        for (String s : list) {
-            if(list2.contains(s)){
-                System.out.println(s+"\t"+s);
-            }else{
-                System.out.println(s);
+        List<String> listResult=new ArrayList<String>();
+        for (String s : list2) {
+            listResult.add(s);
+        }
+
+
+        table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",3);
+        System.out.println(table.length);
+        List<String> list3=new ArrayList<String>();
+        for (int i = 1; i < table.length; i++) {
+            String name = table[i][1];
+            list3.add(name);
+//            System.out.println(name);
+        }
+        for (String s : list2) {
+            if(!list3.contains(s)){
+                listResult.remove(s);
             }
         }
 
+        table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",4);
+        System.out.println(table.length);
+        List<String> list4=new ArrayList<String>();
+        for (int i = 1; i < table.length; i++) {
+            String name = table[i][1];
+            list4.add(name);
+//            System.out.println(name);
+        }
+        for (String s : list2) {
+            if(!list4.contains(s)){
+                listResult.remove(s);
+            }
+        }
+
+        table = excelReader.readExceltoTable("./file/MAC心跳监控异常审查.xls",5);
+        System.out.println(table.length);
+        List<String> list5=new ArrayList<String>();
+        for (int i = 1; i < table.length; i++) {
+            String name = table[i][1];
+            list5.add(name);
+//            System.out.println(name);
+        }
+        for (String s : list2) {
+            if(!list5.contains(s)){
+                listResult.remove(s);
+            }
+        }
+
+
+
+        System.out.println("---------------重复的：");
+        listResult.remove("ZHSP-MAS002_QQ");
+        listResult.remove("ZHSP-MAS023_QQ");
+        System.out.println(listResult.size());
+        for (String s : listResult) {
+            System.out.println(s);
+        }
     }
 }

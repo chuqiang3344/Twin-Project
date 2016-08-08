@@ -111,6 +111,7 @@ public class ExcelReader {
             HSSFSheet sheet = wb.getSheetAt(sheetId-1);
             //得到Excel工作表的行
             int rowNum = sheet.getLastRowNum()+1;
+            //得到Excel工作表的列
             int colNum = sheet.getRow(0).getPhysicalNumberOfCells();
             table=new String[rowNum][colNum];
             for (int i = 0; i < rowNum; i++) {
